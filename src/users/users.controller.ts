@@ -1,26 +1,14 @@
-import { Controller, Get, Post, Param, Body } from '@nestjs/common';
-import { get } from 'http';
-import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './interfaces/user.interface';
+import { Controller } from '@nestjs/common';
+import { Crud } from '@nestjsx/crud';
+import { User } from './user.entity';
 import { UsersService } from './users.service';
 
+@Crud({
+  model: {
+    type: User,
+  },
+})
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
-
-  @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    this.usersService.create(createUserDto);
-    return createUserDto;
-  }
-
-  @Get()
-  async findAll(): Promise<User[]> {
-    return this.usersService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param() params): string {
-    return `This action returns a #${params.id}`;
-  }
+  constructor(public service: UsersService) {}
 }

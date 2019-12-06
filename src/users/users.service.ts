@@ -1,15 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './interfaces/user.interface';
+import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './user.entity';
 
 @Injectable()
-export class UsersService {
-  private readonly users: User[] = [];
-
-  create(user: User) {
-    this.users.push(user);
-  }
-
-  findAll(): User[] {
-    return this.users;
+export class UsersService extends TypeOrmCrudService<User> {
+  constructor(@InjectRepository(User) repo) {
+    super(repo);
   }
 }
